@@ -11,8 +11,6 @@
 #import "DSectionIndexView.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define RANDOM_SEED() srandom(time(NULL))
-#define RANDOM_INT(__MIN__, __MAX__) ((__MIN__) + random() % ((__MAX__+1) - (__MIN__)))
 
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate,DSectionIndexViewDataSource,DSectionIndexViewDelegate>
 @property (__d_weak, nonatomic) IBOutlet UITableView *tableview;
@@ -22,17 +20,6 @@
 @end
 
 @implementation ViewController
-
-- (void)dealloc
-{
-#ifdef IS_ARC
-#else
-    RELEASE_SAFELY(_sections);
-    RELEASE_SAFELY(_sectionIndexView);
-    RELEASE_SAFELY(_tableview);
-    [super dealloc];
-#endif
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,6 +45,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self createData];
+    _sectionIndexView.calloutText = self.sections.copy;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -102,14 +90,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-#ifdef IS_ARC
-#else
-        [cell autorelease];
-#endif
     }
-    
-//    int randomIndex = [self getIndexByRandomRates:[NSArray arrayWithObjects:@152,@3,@98,@188,@250,@365,@798,@45,@32,@15789,@0471,@501,@38,@46,nil ]];
-//    cell.textLabel.text = [NSString stringWithFormat:@"%d",randomIndex];
     cell.textLabel.text = [[self.sectionDic objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
     return cell;
 }
@@ -117,36 +98,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (int)getIndexByRandomRates:(NSArray *)rates
-{
-    RANDOM_SEED();
-    int maxValue = 0;
-    for (NSNumber *rate in rates) {
-        maxValue = maxValue + [rate intValue];
-    }
-    if(maxValue < 1){
-        maxValue = 1;
-    }
-    int rateValue = RANDOM_INT(1, maxValue);
-    int startValue = 0;
-    int endValue = 0;
-    int resultIndex = -1;
-    for (NSNumber *rate in rates) {
-        resultIndex = resultIndex + 1;
-        if([rate intValue] == 0){
-            // skip when rate is 0
-            continue;
-        }
-        endValue = startValue + [rate intValue];
-        if (rateValue > startValue && rateValue) {
-            //this is the generated chip;
-            return resultIndex;
-        }
-        startValue = endValue;
-    }
-    return resultIndex;
 }
 
 
@@ -167,48 +118,35 @@
     itemView.titleLabel.shadowColor = [UIColor whiteColor];
     itemView.titleLabel.shadowOffset = CGSizeMake(0, 1);
     
-#ifdef IS_ARC
-#else
-    [itemView autorelease];
-#endif
-    
     return itemView;
 
 }
-
-- (UIView *)sectionIndexView:(DSectionIndexView *)sectionIndexView calloutViewForSection:(NSInteger)section
-{
-    UILabel *label = [[UILabel alloc] init];
-    
-    label.frame = CGRectMake(0, 0, 80, 80);     
-    
-    label.backgroundColor = [UIColor whiteColor];
-    label.textColor = [UIColor redColor];
-    label.font = [UIFont boldSystemFontOfSize:36];
-    label.text = [self.sections objectAtIndex:section];
-    label.textAlignment = UITextAlignmentCenter;
-    
-    [label.layer setCornerRadius:label.frame.size.width/2];
-    [label.layer setBorderColor:[UIColor darkGrayColor].CGColor];
-    [label.layer setBorderWidth:3.0f];
-    [label.layer setShadowColor:[UIColor blackColor].CGColor];
-    [label.layer setShadowOpacity:0.8];
-    [label.layer setShadowRadius:5.0];
-    [label.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
-    
-#ifdef IS_ARC
-#else
-    [label autorelease];
-#endif
-    
-    return label;
-}
-
-- (NSString *)sectionIndexView:(DSectionIndexView *)sectionIndexView
-               titleForSection:(NSInteger)section
-{
+- (NSString *)sectionIndexView:(DSectionIndexView *)sectionIndexView textForCalloutViewInSection:(NSInteger)section {
     return [self.sections objectAtIndex:section];
 }
+//- (UIView *)sectionIndexView:(DSectionIndexView *)sectionIndexView calloutViewForSection:(NSInteger)section
+//{
+//    UILabel *label = [[UILabel alloc] init];
+//    
+//    label.frame = CGRectMake(0, 0, 80, 80);     
+//    
+//    label.backgroundColor = [UIColor whiteColor];
+//    label.textColor = [UIColor redColor];
+//    label.font = [UIFont boldSystemFontOfSize:36];
+//    label.text = [self.sections objectAtIndex:section];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    
+//    [label.layer setMasksToBounds:YES];
+//    [label.layer setCornerRadius:label.frame.size.width/2];
+//    [label.layer setBorderColor:[UIColor darkGrayColor].CGColor];
+//    [label.layer setBorderWidth:3.0f];
+//    [label.layer setShadowColor:[UIColor blackColor].CGColor];
+//    [label.layer setShadowOpacity:0.8];
+//    [label.layer setShadowRadius:5.0];
+//    [label.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+//    
+//    return label;
+//}
 
 - (void)sectionIndexView:(DSectionIndexView *)sectionIndexView didSelectSection:(NSInteger)section
 {
@@ -290,7 +228,7 @@
     [self.sectionDic setObject:array27 forKey:@"#"];
     
     self.sections = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z",@"#",nil];
-
+    
 }
 
 @end

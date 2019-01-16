@@ -16,36 +16,33 @@
                          itemViewForSection:(NSInteger)section;
 
 - (NSInteger)numberOfItemViewForSectionIndexView:(DSectionIndexView *)sectionIndexView;
-
-@optional
-- (UIView *)sectionIndexView:(DSectionIndexView *)sectionIndexView
-       calloutViewForSection:(NSInteger)section;
-- (NSString *)sectionIndexView:(DSectionIndexView *)sectionIndexView
-               titleForSection:(NSInteger)section;
 @end
 
 @protocol DSectionIndexViewDelegate <NSObject>
+@optional
+///自定义选中提示图
+- (UIView *)sectionIndexView:(DSectionIndexView *)sectionIndexView calloutViewForSection:(NSInteger)section;
 
-- (void)sectionIndexView:(DSectionIndexView *)sectionIndexView
-        didSelectSection:(NSInteger)section;
+- (void)sectionIndexView:(DSectionIndexView *)sectionIndexView didSelectSection:(NSInteger)section;
 
 @end
 
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, SectionIndexCalloutDirection) {
     SectionIndexCalloutDirectionLeft,
     SectionIndexCalloutDirectionRight
-}SectionIndexCalloutDirection;
+};
 
-typedef enum {
-    CalloutViewTypeForQQMusic,   //QQ音乐模式现在只支持DSectionIndexView视图在右边和CalloutView视图在左边
+typedef NS_ENUM(NSUInteger, CalloutViewType) {
+    CalloutViewTypeForDefault,   //CalloutView
     CalloutViewTypeForUserDefined
-}CalloutViewType;
+};
+
 
 @interface DSectionIndexView : UIView
 
-@property (nonatomic, __d_weak) id<DSectionIndexViewDataSource>dataSource;
-@property (nonatomic, __d_weak) id<DSectionIndexViewDelegate>delegate;
+@property (nonatomic, weak) id<DSectionIndexViewDataSource>dataSource;
+@property (nonatomic, weak) id<DSectionIndexViewDelegate>delegate;
 
 //选中提示图显示的方向，相对于DSectionIndexView的对象而言
 @property (nonatomic, assign) SectionIndexCalloutDirection calloutDirection;
@@ -53,11 +50,18 @@ typedef enum {
 //是否显示选中提示图，默认是YES
 @property (nonatomic, assign) BOOL isShowCallout;
 
-//选中提示图的样式,默认是QQ音乐的样式
-@property (nonatomic, assign) BOOL calloutViewType;
+//选中提示图的样式
+@property (nonatomic, assign) CalloutViewType calloutViewType;
 
 //itemView的高度，默认是根据itemView的数目均分DSectionIndexView的对象的高度
 @property (nonatomic, assign) CGFloat fixedItemHeight;
+
+///选中提示图片
+@property (nonatomic, strong) UIImage *calloutImage;
+///选中提示文字
+@property (nonatomic, copy) NSArray *calloutText;
+///选中提示文字属性
+@property (nonatomic, copy) NSDictionary<NSAttributedStringKey, id> *calloutTextAttributes;
 
 //选中提示图与DSectionIndexView的对象边缘的距离
 @property (nonatomic, assign) CGFloat calloutMargin;

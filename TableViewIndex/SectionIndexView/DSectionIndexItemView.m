@@ -15,34 +15,22 @@
 
 @implementation DSectionIndexItemView
 
-- (void)dealloc
-{
-#ifdef IS_ARC
-#else
-    RELEASE_SAFELY(_contentView);
-    RELEASE_SAFELY(_backgroundImageView);
-    RELEASE_SAFELY(_titleLabel);
-    [super dealloc];
-#endif
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor clearColor];
         [self addSubview:self.contentView];
         
-        _backgroundImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:self.backgroundImageView];
+        //_backgroundImageView = [[UIImageView alloc] init];
+        //[self.contentView addSubview:self.backgroundImageView];
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = [UIColor blackColor];
         _titleLabel.highlightedTextColor = [UIColor whiteColor];
-        _titleLabel.textAlignment = UITextAlignmentCenter;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:self.titleLabel];
     }
     return self;

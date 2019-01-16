@@ -10,12 +10,13 @@
 #import "DSectionIndexItemView.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define IS_ARC  (__has_feature(obj_arc))
 
 @interface DSectionIndexView (){
     CGFloat   itemViewHeight;
     NSInteger highlightedItemIndex;
 }
+
+
 @property (nonatomic, retain) UIView *backgroundView;
 @property (nonatomic, retain) UIView *calloutView;
 @property (nonatomic, retain) NSMutableArray *itemViewList;
@@ -27,18 +28,8 @@
 
 @end
 
-@implementation DSectionIndexView
 
-- (void)dealloc
-{
-#ifdef IS_ARC
-#else
-    RELEASE_SAFELY(_backgroundView);
-    RELEASE_SAFELY(_calloutView);
-    RELEASE_SAFELY(_itemViewList);
-    [super dealloc];
-#endif
-}
+@implementation DSectionIndexView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -46,7 +37,6 @@
     if (self) {
         // Initialization code
         _backgroundView = [[UIView alloc] init];
-        _backgroundView.backgroundColor = [UIColor grayColor];
         _backgroundView.clipsToBounds = YES;
         _backgroundView.layer.cornerRadius = 12.f;
         [self addSubview:self.backgroundView];
@@ -57,7 +47,7 @@
         _fixedItemHeight = 0.f;
         _isShowCallout = YES;
         _calloutDirection = SectionIndexCalloutDirectionLeft;
-        _calloutViewType = CalloutViewTypeForQQMusic;
+        _calloutViewType = CalloutViewTypeForUserDefined;
     }
     return self;
 }
@@ -126,58 +116,67 @@
     CGFloat centerY = seletedItemView.center.y;
     
     if (self.isShowCallout) {
-        if (self.calloutViewType == CalloutViewTypeForUserDefined && _dataSource && [_dataSource respondsToSelector:@selector(sectionIndexView:calloutViewForSection:)]) {
-            self.calloutView = [_dataSource sectionIndexView:self calloutViewForSection:section];
+        if (self.calloutViewType == CalloutViewTypeForUserDefined && _delegate && [_delegate respondsToSelector:@selector(sectionIndexView:calloutViewForSection:)]) {
+            self.calloutView = [_delegate sectionIndexView:self calloutViewForSection:section];
             [self addSubview:self.calloutView];
-            
             
             if (centerY - CGRectGetHeight(self.calloutView.frame)/2 < 0) {
                 centerY = CGRectGetHeight(self.calloutView.frame)/2;
             }
-            
             if (seletedItemView.center.y + CGRectGetHeight(self.calloutView.frame)/2 > itemViewHeight * self.itemViewList.count) {
                 centerY = itemViewHeight * self.itemViewList.count - CGRectGetHeight(self.calloutView.frame)/2;
             }
-            
-                       
         }else {
-            _calloutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 88, 51)];
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"index_partner_view_bg"]];
-            imageView.frame = _calloutView.frame;
-            [self.calloutView addSubview:imageView];
-            
-            UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, (CGRectGetHeight(self.calloutView.frame) - 30)/2, 30, 30)];
-            tipLabel.backgroundColor = [UIColor clearColor];
-            tipLabel.textColor = [UIColor redColor];
-            tipLabel.font = [UIFont boldSystemFontOfSize:36];
-            if (_dataSource && [_dataSource respondsToSelector:@selector(sectionIndexView:titleForSection:)]) {
-                tipLabel.text = [_dataSource sectionIndexView:self titleForSection:section];
+            _calloutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+            if (self.calloutImage) {
+                UIImageView *imageView = [[UIImageView alloc] initWithFrame:_calloutView.frame];
+                imageView.image = self.calloutImage;
+                [self.calloutView addSubview:imageView];
             }
-            tipLabel.textAlignment = UITextAlignmentCenter;
+
+            UILabel *tipLabel = [[UILabel alloc] initWithFrame:_calloutView.frame];
+            tipLabel.center = CGPointMake(_calloutView.center.x - 5, _calloutView.center.y);
+            tipLabel.backgroundColor = [UIColor clearColor];
+            if (self.calloutTextAttributes) {
+                UIColor *color = self.calloutTextAttributes[NSForegroundColorAttributeName];
+                UIFont *font = self.calloutTextAttributes[NSFontAttributeName];
+                tipLabel.textColor = color;
+                tipLabel.font = font;
+            } else {
+                tipLabel.textColor = [UIColor redColor];
+                tipLabel.font = [UIFont boldSystemFontOfSize:36];
+            }
+            if (self.calloutText) {
+                NSString *text = self.calloutText[section];
+                if (text == nil || text.length == 0) {
+                    tipLabel.text = @"#";
+                } else {
+                    tipLabel.text = text;
+                }
+            }
+            tipLabel.textAlignment = NSTextAlignmentCenter;
             [self.calloutView addSubview:tipLabel];
             [self addSubview:self.calloutView];
-            
-#ifdef IS_ARC
-#else
-            [imageView relese];
-            [tipLabel  relese];
-#endif
-           
-            self.calloutMargin = -18.f;
         }
         
+        switch (self.calloutDirection) {
+            case SectionIndexCalloutDirectionRight:
+                if (self.calloutMargin <= 0) {
+                    self.calloutMargin = UIScreen.mainScreen.bounds.size.width/2.0-CGRectGetWidth(_calloutView.frame)/2.0-CGRectGetWidth(seletedItemView.frame)/2.0;
+                }
+                _calloutView.center = CGPointMake(self.calloutMargin, centerY);
+                break;
+            case SectionIndexCalloutDirectionLeft:
+                if (self.calloutMargin <= 0) {
+                    self.calloutMargin = UIScreen.mainScreen.bounds.size.width/2.0-CGRectGetWidth(_calloutView.frame)/2.0;
+                }
+                _calloutView.center = CGPointMake(-self.calloutMargin, centerY);
+                break;
+            default:
+                break;
+        }
     }
     
-    switch (self.calloutDirection) {
-        case SectionIndexCalloutDirectionRight:
-            _calloutView.center = CGPointMake(CGRectGetWidth(seletedItemView.frame) + CGRectGetWidth(self.calloutView.frame)/2 + self.calloutMargin, centerY);
-            break;
-        case SectionIndexCalloutDirectionLeft:
-            _calloutView.center = CGPointMake(- (CGRectGetWidth(self.calloutView.frame)/2 + self.calloutMargin), centerY);
-            break;
-        default:
-            break;
-    }
 
     
     if (_delegate && [_delegate respondsToSelector:@selector(sectionIndexView:didSelectSection:)]) {
@@ -197,14 +196,9 @@
 {
     if (self.isShowCallout) {
         [self.calloutView removeFromSuperview];
-#ifdef IS_ARC
         if (self.calloutView) {
-            self.calloutView = nil; 
-        }
-#else
-       RELEASE_SAFELY(_calloutView);  
-#endif
-       
+            self.calloutView = nil;
+        }       
     }
     
     for (DSectionIndexItemView *itemView  in self.itemViewList) {

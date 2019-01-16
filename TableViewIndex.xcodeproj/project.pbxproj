@@ -24,8 +24,8 @@
 		05B52D85172D425600B52BAA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 05B52D84172D425600B52BAA /* Default-568h@2x.png */; };
 		05B52D88172D425600B52BAA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05B52D87172D425600B52BAA /* ViewController.m */; };
 		05B52D8B172D425600B52BAA /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05B52D89172D425600B52BAA /* ViewController.xib */; };
-		05B52D94172D438800B52BAA /* DSectionIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 05B52D93172D438800B52BAA /* DSectionIndexView.m */; };
-		05B52D97172D43A100B52BAA /* DSectionIndexItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 05B52D96172D43A100B52BAA /* DSectionIndexItemView.m */; };
+		16E9358A21EF093C002F35A3 /* DSectionIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E9358621EF093C002F35A3 /* DSectionIndexView.m */; };
+		16E9358B21EF093C002F35A3 /* DSectionIndexItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E9358921EF093C002F35A3 /* DSectionIndexItemView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,10 +52,10 @@
 		05B52D86172D425600B52BAA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		05B52D87172D425600B52BAA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		05B52D8A172D425600B52BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		05B52D92172D438800B52BAA /* DSectionIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSectionIndexView.h; sourceTree = "<group>"; };
-		05B52D93172D438800B52BAA /* DSectionIndexView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSectionIndexView.m; sourceTree = "<group>"; };
-		05B52D95172D43A100B52BAA /* DSectionIndexItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSectionIndexItemView.h; sourceTree = "<group>"; };
-		05B52D96172D43A100B52BAA /* DSectionIndexItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSectionIndexItemView.m; sourceTree = "<group>"; };
+		16E9358621EF093C002F35A3 /* DSectionIndexView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSectionIndexView.m; sourceTree = "<group>"; };
+		16E9358721EF093C002F35A3 /* DSectionIndexItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSectionIndexItemView.h; sourceTree = "<group>"; };
+		16E9358821EF093C002F35A3 /* DSectionIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSectionIndexView.h; sourceTree = "<group>"; };
+		16E9358921EF093C002F35A3 /* DSectionIndexItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSectionIndexItemView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 		05B52D74172D425600B52BAA /* TableViewIndex */ = {
 			isa = PBXGroup;
 			children = (
-				05B52D91172D435500B52BAA /* DeanKit */,
+				16E9358521EF093C002F35A3 /* SectionIndexView */,
 				05B52D7D172D425600B52BAA /* AppDelegate.h */,
 				05B52D7E172D425600B52BAA /* AppDelegate.m */,
 				05B52D86172D425600B52BAA /* ViewController.h */,
@@ -135,15 +135,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		05B52D91172D435500B52BAA /* DeanKit */ = {
+		16E9358521EF093C002F35A3 /* SectionIndexView */ = {
 			isa = PBXGroup;
 			children = (
-				05B52D92172D438800B52BAA /* DSectionIndexView.h */,
-				05B52D93172D438800B52BAA /* DSectionIndexView.m */,
-				05B52D95172D43A100B52BAA /* DSectionIndexItemView.h */,
-				05B52D96172D43A100B52BAA /* DSectionIndexItemView.m */,
+				16E9358721EF093C002F35A3 /* DSectionIndexItemView.h */,
+				16E9358921EF093C002F35A3 /* DSectionIndexItemView.m */,
+				16E9358821EF093C002F35A3 /* DSectionIndexView.h */,
+				16E9358621EF093C002F35A3 /* DSectionIndexView.m */,
 			);
-			name = DeanKit;
+			path = SectionIndexView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +174,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Dean;
+				TargetAttributes = {
+					05B52D6A172D425600B52BAA = {
+						DevelopmentTeam = W95LSXPBS2;
+					};
+				};
 			};
 			buildConfigurationList = 05B52D66172D425600B52BAA /* Build configuration list for PBXProject "TableViewIndex" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -217,10 +222,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				05B52D7B172D425600B52BAA /* main.m in Sources */,
+				16E9358A21EF093C002F35A3 /* DSectionIndexView.m in Sources */,
 				05B52D7F172D425600B52BAA /* AppDelegate.m in Sources */,
 				05B52D88172D425600B52BAA /* ViewController.m in Sources */,
-				05B52D94172D438800B52BAA /* DSectionIndexView.m in Sources */,
-				05B52D97172D43A100B52BAA /* DSectionIndexItemView.m in Sources */,
+				16E9358B21EF093C002F35A3 /* DSectionIndexItemView.m in Sources */,
 				0597502E172D7AC1003D38F2 /* DemoItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,7 +277,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -296,7 +301,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -306,10 +311,13 @@
 		05B52D8F172D425600B52BAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = W95LSXPBS2;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TableViewIndex/TableViewIndex-Prefix.pch";
 				INFOPLIST_FILE = "TableViewIndex/TableViewIndex-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sectionIndex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -318,10 +326,13 @@
 		05B52D90172D425600B52BAA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = W95LSXPBS2;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TableViewIndex/TableViewIndex-Prefix.pch";
 				INFOPLIST_FILE = "TableViewIndex/TableViewIndex-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sectionIndex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
